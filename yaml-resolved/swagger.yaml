@@ -1,0 +1,1199 @@
+---
+swagger: "2.0"
+info:
+  description: 'This is a sample server Petstore server.  You can find out more about     Swagger
+    at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For
+    this sample, you can use the api key `special-key` to test the authorization     filters.'
+  version: 1.0.0
+  title: API Sushifinder
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: petstore.swagger.io
+basePath: /v1
+tags:
+- name: API
+  description: API de operações com usuários
+schemes:
+- http
+paths:
+  /clientes:
+    get:
+      tags:
+      - clientes
+      summary: Listar clientes
+      description: ""
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Clientes recuperados com sucesso
+          schema:
+            $ref: '#/definitions/Clientes'
+        500:
+          description: Erro interno no servidor
+          schema:
+            $ref: '#/definitions/Erro'
+    post:
+      tags:
+      - clientes
+      summary: Cadastrar um cliente
+      description: ""
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Objeto cliente que sera cadastrado ao banco
+        required: true
+        schema:
+          $ref: '#/definitions/Cliente'
+      responses:
+        201:
+          description: Objeto criado com sucesso
+          schema:
+            $ref: '#/definitions/Cliente'
+        400:
+          description: Campos inválidos
+          schema:
+            $ref: '#/definitions/Erro'
+        500:
+          description: Erro interno no servidor
+          schema:
+            $ref: '#/definitions/Erro'
+  /clientes/{clienteId}:
+    get:
+      tags:
+      - clientes
+      summary: Listar cliente
+      description: Retorna um cliente
+      produces:
+      - application/json
+      parameters:
+      - name: clienteId
+        in: path
+        description: id do cliente para retorno
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: Cliente retornado com sucesso
+          schema:
+            $ref: '#/definitions/Cliente'
+        400:
+          description: Requisicao invalida
+          schema:
+            $ref: '#/definitions/Erro'
+        404:
+          description: Cliente nao encontrado
+          schema:
+            $ref: '#/definitions/Erro'
+        500:
+          description: Erro interno no servidor
+          schema:
+            $ref: '#/definitions/Erro'
+    put:
+      tags:
+      - clientes
+      summary: Atualiza um cliente
+      description: Atualiza um cliente passando o id
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: clienteId
+        in: path
+        description: id do cliente para ser atualizado
+        required: true
+        type: integer
+        format: int64
+      - in: body
+        name: payload
+        description: Objeto cliente que sera cadastrado ao banco
+        required: true
+        schema:
+          $ref: '#/definitions/Cliente'
+      responses:
+        200:
+          description: Cliente atualizado com sucesso
+          schema:
+            $ref: '#/definitions/Cliente'
+        400:
+          description: Requisicao invalida
+          schema:
+            $ref: '#/definitions/Erro'
+        404:
+          description: Cliente nao encontrado
+          schema:
+            $ref: '#/definitions/Erro'
+        500:
+          description: Erro interno no servidor
+          schema:
+            $ref: '#/definitions/Erro'
+    delete:
+      tags:
+      - clientes
+      summary: Exclui um cliente
+      description: ""
+      operationId: deleteCliente
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: clienteId
+        in: path
+        description: Pet id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        204:
+          description: Objeto deletado com sucesso
+        400:
+          description: Requisicao invalida
+        404:
+          description: Objeto nao encontrado
+  /clientes/{clienteId}/pedidos:
+    get:
+      tags:
+      - clientes
+      summary: Retorna todos os pedidos
+      description: Retorna todos os pedidos do cliente
+      operationId: ""
+      produces:
+      - application/json
+      parameters:
+      - name: clienteId
+        in: path
+        description: ID of pet to return
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Pedidos'
+    post:
+      tags:
+      - clientes
+      summary: Cadastra um pedido
+      description: ""
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: clienteId
+        in: path
+        description: ID of pet to return
+        required: true
+        type: integer
+        format: int64
+      - in: body
+        name: body
+        description: Objeto cliente que sera cadastrado ao banco
+        required: true
+        schema:
+          $ref: '#/definitions/Cliente'
+      responses:
+        201:
+          description: Objeto criado com sucesso
+        400:
+          description: Campos inválidos
+        500:
+          description: Erro interno no servidor
+  /clientes/{clienteId}/pedidos/{pedidoId}:
+    get:
+      tags:
+      - clientes
+      summary: Retorna um pedido de um cliente
+      description: Retorna todos os pedidos do cliente
+      operationId: ""
+      produces:
+      - application/json
+      parameters:
+      - name: clienteId
+        in: path
+        description: ID of pet to return
+        required: true
+        type: integer
+        format: int64
+      - name: pedidoId
+        in: path
+        description: ID of pet to return
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            additionalProperties:
+              type: integer
+              format: int32
+  /ingredientes:
+    get:
+      tags:
+      - estoque
+      summary: Retorna todos os ingredientes
+      description: Retorna todos os ingredientes do banco de dados
+      operationId: getIngredientes
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            additionalProperties:
+              type: integer
+              format: int32
+    post:
+      tags:
+      - estoque
+      summary: Cadastrar um ingrediente
+      description: ""
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Objeto cliente que sera cadastrado ao banco
+        required: true
+        schema:
+          $ref: '#/definitions/Ingrediente'
+      responses:
+        201:
+          description: Objeto criado com sucesso
+        400:
+          description: Campos inválidos
+        500:
+          description: Erro interno no servidor
+  /ingredientes/{ingredienteId}:
+    get:
+      tags:
+      - estoque
+      summary: Retorna um ingrediente
+      description: Retorna um ingrediente de acordo com id
+      operationId: getIngrediente
+      produces:
+      - application/json
+      parameters:
+      - name: ingredienteId
+        in: path
+        description: ID do ingrediente
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Ingrediente'
+        400:
+          description: Invalid Order
+    put:
+      tags:
+      - estoque
+      summary: Atualiza um ingrediente
+      description: ""
+      operationId: ""
+      consumes:
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - name: ingredienteId
+        in: path
+        description: ID of pet that needs to be updated
+        required: true
+        type: integer
+        format: int64
+      - name: name
+        in: formData
+        description: Updated name of the pet
+        required: false
+        type: string
+      - name: status
+        in: formData
+        description: Updated status of the pet
+        required: false
+        type: string
+      responses:
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - estoque
+      summary: Exclui um ingrediente
+      description: ""
+      operationId: ""
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: ingredienteId
+        in: path
+        description: Pet id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Pet not found
+  /pedidos:
+    get:
+      tags:
+      - pedido
+      summary: Retorna todos os pedidos
+      description: Retorna todos os pedidos do banco de dados
+      operationId: ""
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            additionalProperties:
+              type: integer
+              format: int32
+    post:
+      tags:
+      - pedido
+      summary: Cadastra um pedido
+      description: ""
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Objeto cliente que sera cadastrado ao banco
+        required: true
+        schema:
+          $ref: '#/definitions/Pedido'
+      responses:
+        201:
+          description: Objeto criado com sucesso
+        400:
+          description: Campos inválidos
+        500:
+          description: Erro interno no servidor
+  /pedidos/{pedidoId}:
+    get:
+      tags:
+      - pedido
+      summary: Retorna um ingrediente
+      description: Retorna um ingrediente de acordo com id
+      operationId: ""
+      produces:
+      - application/json
+      parameters:
+      - name: pedidoId
+        in: path
+        description: ID do ingrediente
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Pessoa'
+        400:
+          description: Invalid Order
+    put:
+      tags:
+      - pedido
+      summary: Atualiza um ingrediente
+      description: ""
+      operationId: ""
+      consumes:
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - name: pedidoId
+        in: path
+        description: ID of pet that needs to be updated
+        required: true
+        type: integer
+        format: int64
+      - name: name
+        in: formData
+        description: Updated name of the pet
+        required: false
+        type: string
+      - name: status
+        in: formData
+        description: Updated status of the pet
+        required: false
+        type: string
+      responses:
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - pedido
+      summary: Exclui um pedido
+      description: ""
+      operationId: ""
+      produces:
+      - application/json
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: pedidoId
+        in: path
+        description: Pet id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Pet not found
+  /produtos:
+    get:
+      tags:
+      - produto
+      summary: Retorna todos os produtos
+      description: Retorna todos os produtos do banco de dados
+      operationId: ""
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            additionalProperties:
+              type: integer
+              format: int32
+    post:
+      tags:
+      - produto
+      summary: Cadastra um produto
+      description: ""
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Objeto produto que sera cadastrado ao banco
+        required: true
+        schema:
+          $ref: '#/definitions/Pessoa'
+      responses:
+        201:
+          description: Objeto criado com sucesso
+        400:
+          description: Campos inválidos
+        500:
+          description: Erro interno no servidor
+  /produtos/{produtoId}:
+    get:
+      tags:
+      - produto
+      summary: Retorna um produto
+      description: Retorna um ingrediente de acordo com id
+      operationId: ""
+      produces:
+      - application/json
+      parameters:
+      - name: produtoId
+        in: path
+        description: ID do ingrediente
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Produto'
+        400:
+          description: Invalid Order
+    put:
+      tags:
+      - produto
+      summary: Atualiza um produto
+      description: ""
+      operationId: ""
+      consumes:
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - name: produtoId
+        in: path
+        description: ID of pet that needs to be updated
+        required: true
+        type: integer
+        format: int64
+      - name: name
+        in: formData
+        description: Updated name of the pet
+        required: false
+        type: string
+      - name: status
+        in: formData
+        description: Updated status of the pet
+        required: false
+        type: string
+      responses:
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - produto
+      summary: Exclui um produto
+      description: ""
+      operationId: ""
+      produces:
+      - application/json
+      parameters:
+      - name: produtoId
+        in: path
+        description: Pet id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Pet not found
+  /produtos/{produtoId}/ingredientes:
+    get:
+      tags:
+      - produto
+      summary: Retorna ingredientes dentro de um produto
+      description: Retorna todos os ingredientes dentro de um produto
+      operationId: ""
+      produces:
+      - application/json
+      parameters:
+      - name: produtoId
+        in: path
+        description: Pet id to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            additionalProperties:
+              type: integer
+              format: int32
+    put:
+      tags:
+      - produto
+      summary: Atualiza ingredientes dentro de um produto
+      description: ""
+      operationId: ""
+      consumes:
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      parameters:
+      - name: produtoId
+        in: path
+        description: ID of pet that needs to be updated
+        required: true
+        type: integer
+        format: int64
+      - name: name
+        in: formData
+        description: Updated name of the pet
+        required: false
+        type: string
+      - name: status
+        in: formData
+        description: Updated status of the pet
+        required: false
+        type: string
+      responses:
+        405:
+          description: Invalid input
+definitions:
+  Endereco:
+    type: object
+    properties:
+      id:
+        type: integer
+      estado:
+        type: string
+      cidade:
+        type: string
+      bairro:
+        type: string
+      logradouro:
+        type: string
+      numero:
+        type: string
+      complemento:
+        type: string
+    example:
+      estado: estado
+      cidade: cidade
+      complemento: complemento
+      numero: numero
+      bairro: bairro
+      logradouro: logradouro
+      id: 1
+  PessoaDefinition:
+    type: object
+    properties:
+      id:
+        type: integer
+      nome:
+        type: string
+      sobrenome:
+        type: string
+      cpf:
+        type: string
+      telefone:
+        type: string
+      sexo:
+        type: string
+      email:
+        type: string
+      enderecos:
+        type: array
+        items:
+          $ref: '#/definitions/Endereco'
+      dataNasc:
+        type: string
+    example:
+      telefone: telefone
+      dataNasc: dataNasc
+      enderecos:
+      - estado: estado
+        cidade: cidade
+        complemento: complemento
+        numero: numero
+        bairro: bairro
+        logradouro: logradouro
+        id: 1
+      - estado: estado
+        cidade: cidade
+        complemento: complemento
+        numero: numero
+        bairro: bairro
+        logradouro: logradouro
+        id: 1
+      cpf: cpf
+      nome: nome
+      id: 6
+      sobrenome: sobrenome
+      sexo: sexo
+      email: email
+  Pessoa:
+    type: object
+    properties:
+      pessoa:
+        $ref: '#/definitions/PessoaDefinition'
+    example:
+      pessoa:
+        telefone: telefone
+        dataNasc: dataNasc
+        enderecos:
+        - estado: estado
+          cidade: cidade
+          complemento: complemento
+          numero: numero
+          bairro: bairro
+          logradouro: logradouro
+          id: 1
+        - estado: estado
+          cidade: cidade
+          complemento: complemento
+          numero: numero
+          bairro: bairro
+          logradouro: logradouro
+          id: 1
+        cpf: cpf
+        nome: nome
+        id: 6
+        sobrenome: sobrenome
+        sexo: sexo
+        email: email
+  Ingrediente:
+    type: object
+    properties:
+      id:
+        type: integer
+      descricao:
+        type: string
+      quantidadeUsado:
+        type: integer
+      quantidadeEstoque:
+        type: integer
+    example:
+      quantidadeUsado: 5
+      quantidadeEstoque: 5
+      id: 1
+      descricao: descricao
+  Produto:
+    type: object
+    properties:
+      id:
+        type: integer
+      descricao:
+        type: string
+      ingredientes:
+        type: array
+        items:
+          $ref: '#/definitions/Ingrediente'
+      preco:
+        type: number
+    example:
+      preco: 2.3021358869347654518833223846741020679473876953125
+      ingredientes:
+      - quantidadeUsado: 5
+        quantidadeEstoque: 5
+        id: 1
+        descricao: descricao
+      - quantidadeUsado: 5
+        quantidadeEstoque: 5
+        id: 1
+        descricao: descricao
+      id: 6
+      descricao: descricao
+  PedidoDefinition:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      produtos:
+        type: array
+        items:
+          $ref: '#/definitions/Produto'
+      status:
+        type: string
+      cliente:
+        $ref: '#/definitions/Cliente'
+      precoTotal:
+        type: number
+    example:
+      cliente:
+        cliente:
+          pessoa:
+            pessoa:
+              telefone: telefone
+              dataNasc: dataNasc
+              enderecos:
+              - estado: estado
+                cidade: cidade
+                complemento: complemento
+                numero: numero
+                bairro: bairro
+                logradouro: logradouro
+                id: 1
+              - estado: estado
+                cidade: cidade
+                complemento: complemento
+                numero: numero
+                bairro: bairro
+                logradouro: logradouro
+                id: 1
+              cpf: cpf
+              nome: nome
+              id: 6
+              sobrenome: sobrenome
+              sexo: sexo
+              email: email
+          id: 0
+      produtos:
+      - preco: 2.3021358869347654518833223846741020679473876953125
+        ingredientes:
+        - quantidadeUsado: 5
+          quantidadeEstoque: 5
+          id: 1
+          descricao: descricao
+        - quantidadeUsado: 5
+          quantidadeEstoque: 5
+          id: 1
+          descricao: descricao
+        id: 6
+        descricao: descricao
+      - preco: 2.3021358869347654518833223846741020679473876953125
+        ingredientes:
+        - quantidadeUsado: 5
+          quantidadeEstoque: 5
+          id: 1
+          descricao: descricao
+        - quantidadeUsado: 5
+          quantidadeEstoque: 5
+          id: 1
+          descricao: descricao
+        id: 6
+        descricao: descricao
+      id: 0
+      precoTotal: 7.061401241503109105224211816675961017608642578125
+      status: status
+  Pedido:
+    type: object
+    properties:
+      pedido:
+        $ref: '#/definitions/PedidoDefinition'
+    example:
+      pedido:
+        cliente:
+          cliente:
+            pessoa:
+              pessoa:
+                telefone: telefone
+                dataNasc: dataNasc
+                enderecos:
+                - estado: estado
+                  cidade: cidade
+                  complemento: complemento
+                  numero: numero
+                  bairro: bairro
+                  logradouro: logradouro
+                  id: 1
+                - estado: estado
+                  cidade: cidade
+                  complemento: complemento
+                  numero: numero
+                  bairro: bairro
+                  logradouro: logradouro
+                  id: 1
+                cpf: cpf
+                nome: nome
+                id: 6
+                sobrenome: sobrenome
+                sexo: sexo
+                email: email
+            id: 0
+        produtos:
+        - preco: 2.3021358869347654518833223846741020679473876953125
+          ingredientes:
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          id: 6
+          descricao: descricao
+        - preco: 2.3021358869347654518833223846741020679473876953125
+          ingredientes:
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          id: 6
+          descricao: descricao
+        id: 0
+        precoTotal: 7.061401241503109105224211816675961017608642578125
+        status: status
+  Pedidos:
+    type: object
+    properties:
+      pedidos:
+        type: array
+        items:
+          $ref: '#/definitions/PedidoDefinition'
+    example:
+      pedidos:
+      - cliente:
+          cliente:
+            pessoa:
+              pessoa:
+                telefone: telefone
+                dataNasc: dataNasc
+                enderecos:
+                - estado: estado
+                  cidade: cidade
+                  complemento: complemento
+                  numero: numero
+                  bairro: bairro
+                  logradouro: logradouro
+                  id: 1
+                - estado: estado
+                  cidade: cidade
+                  complemento: complemento
+                  numero: numero
+                  bairro: bairro
+                  logradouro: logradouro
+                  id: 1
+                cpf: cpf
+                nome: nome
+                id: 6
+                sobrenome: sobrenome
+                sexo: sexo
+                email: email
+            id: 0
+        produtos:
+        - preco: 2.3021358869347654518833223846741020679473876953125
+          ingredientes:
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          id: 6
+          descricao: descricao
+        - preco: 2.3021358869347654518833223846741020679473876953125
+          ingredientes:
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          id: 6
+          descricao: descricao
+        id: 0
+        precoTotal: 7.061401241503109105224211816675961017608642578125
+        status: status
+      - cliente:
+          cliente:
+            pessoa:
+              pessoa:
+                telefone: telefone
+                dataNasc: dataNasc
+                enderecos:
+                - estado: estado
+                  cidade: cidade
+                  complemento: complemento
+                  numero: numero
+                  bairro: bairro
+                  logradouro: logradouro
+                  id: 1
+                - estado: estado
+                  cidade: cidade
+                  complemento: complemento
+                  numero: numero
+                  bairro: bairro
+                  logradouro: logradouro
+                  id: 1
+                cpf: cpf
+                nome: nome
+                id: 6
+                sobrenome: sobrenome
+                sexo: sexo
+                email: email
+            id: 0
+        produtos:
+        - preco: 2.3021358869347654518833223846741020679473876953125
+          ingredientes:
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          id: 6
+          descricao: descricao
+        - preco: 2.3021358869347654518833223846741020679473876953125
+          ingredientes:
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          - quantidadeUsado: 5
+            quantidadeEstoque: 5
+            id: 1
+            descricao: descricao
+          id: 6
+          descricao: descricao
+        id: 0
+        precoTotal: 7.061401241503109105224211816675961017608642578125
+        status: status
+  ClienteDefinition:
+    type: object
+    properties:
+      id:
+        type: integer
+      pessoa:
+        $ref: '#/definitions/Pessoa'
+    example:
+      pessoa:
+        pessoa:
+          telefone: telefone
+          dataNasc: dataNasc
+          enderecos:
+          - estado: estado
+            cidade: cidade
+            complemento: complemento
+            numero: numero
+            bairro: bairro
+            logradouro: logradouro
+            id: 1
+          - estado: estado
+            cidade: cidade
+            complemento: complemento
+            numero: numero
+            bairro: bairro
+            logradouro: logradouro
+            id: 1
+          cpf: cpf
+          nome: nome
+          id: 6
+          sobrenome: sobrenome
+          sexo: sexo
+          email: email
+      id: 0
+  Cliente:
+    type: object
+    properties:
+      cliente:
+        $ref: '#/definitions/ClienteDefinition'
+    example:
+      cliente:
+        pessoa:
+          pessoa:
+            telefone: telefone
+            dataNasc: dataNasc
+            enderecos:
+            - estado: estado
+              cidade: cidade
+              complemento: complemento
+              numero: numero
+              bairro: bairro
+              logradouro: logradouro
+              id: 1
+            - estado: estado
+              cidade: cidade
+              complemento: complemento
+              numero: numero
+              bairro: bairro
+              logradouro: logradouro
+              id: 1
+            cpf: cpf
+            nome: nome
+            id: 6
+            sobrenome: sobrenome
+            sexo: sexo
+            email: email
+        id: 0
+  Clientes:
+    type: object
+    properties:
+      clientes:
+        type: array
+        items:
+          $ref: '#/definitions/ClienteDefinition'
+    example:
+      clientes:
+      - pessoa:
+          pessoa:
+            telefone: telefone
+            dataNasc: dataNasc
+            enderecos:
+            - estado: estado
+              cidade: cidade
+              complemento: complemento
+              numero: numero
+              bairro: bairro
+              logradouro: logradouro
+              id: 1
+            - estado: estado
+              cidade: cidade
+              complemento: complemento
+              numero: numero
+              bairro: bairro
+              logradouro: logradouro
+              id: 1
+            cpf: cpf
+            nome: nome
+            id: 6
+            sobrenome: sobrenome
+            sexo: sexo
+            email: email
+        id: 0
+      - pessoa:
+          pessoa:
+            telefone: telefone
+            dataNasc: dataNasc
+            enderecos:
+            - estado: estado
+              cidade: cidade
+              complemento: complemento
+              numero: numero
+              bairro: bairro
+              logradouro: logradouro
+              id: 1
+            - estado: estado
+              cidade: cidade
+              complemento: complemento
+              numero: numero
+              bairro: bairro
+              logradouro: logradouro
+              id: 1
+            cpf: cpf
+            nome: nome
+            id: 6
+            sobrenome: sobrenome
+            sexo: sexo
+            email: email
+        id: 0
+  ErroDefinition:
+    type: object
+    properties:
+      codigo:
+        type: integer
+      descricao:
+        type: string
+      mensagem:
+        type: string
+  Erro:
+    type: object
+    properties:
+      erro:
+        $ref: '#/definitions/ErroDefinition'
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
